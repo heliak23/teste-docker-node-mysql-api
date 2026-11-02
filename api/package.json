@@ -1,0 +1,10 @@
+{
+    "name": "todo-cfb",
+    "dependencies": {
+        "express": "^5.2.1",
+        "mysql2": "^3.6.0"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
+}

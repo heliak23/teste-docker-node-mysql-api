@@ -1,0 +1,32 @@
+services:
+  minha-api:
+    build: ./api # O Docker vai entrar na pasta e procurar o Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=meubanco
+      - DB_USER=root
+      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
+    depends_on:
+      - meubanco
+    restart: always # Se o banco demorar e a API cair, ela tenta de novo
+
+  meubanco:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - dados-do-banco:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+
+volumes:
+  dados-do-banco:
